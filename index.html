@@ -84,7 +84,14 @@
                         fetch ${window.COCKPITAPIURL}collections/save/content with method: 'POST', body: xdata as JSON
                         
                         log 'Result after saving to Cockpit '+result
+                        set #general-alert's innerHTML to 'Saved! '+my value
+                        set #general-alert's *opacity to 0
+                        show #general-alert
+                        transition #general-alert's *opacity to 100%
                         hide me
+                        wait 4s
+                        transition #general-alert's *opacity to initial 
+                        hide #general-alert                    
                         show previous <span/>"
                     />` after me
               hide next <input/>
@@ -124,15 +131,20 @@
     </head>
     <body>
         <header>
+          <div class="alert alert-success" role="alert" id="general-alert"
+            _="on load hide me">
+            A simple success alert—check it out!
+          </div>
+
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
                 <span class="site-heading-upper text-primary mb-3"
                   _="install FetchContentFromCockpit(key: 'site-heading-upper')
-                  install addEditInPlaceWidget">A Free Bootstrap Business Theme</span>
+                  install addEditInPlaceWidget"></span>
                   
                 
                 <span class="site-heading-lower"
                   _="install FetchContentFromCockpit(key: 'site-heading-lower')
-                      install addEditInPlaceWidget">Business Casual</span>
+                      install addEditInPlaceWidget"></span>
             </h1>
         </header>
         <!-- Navigation-->
