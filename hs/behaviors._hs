@@ -1,0 +1,15 @@
+
+behavior FetchFromCockpit(region)
+  on load fetch `${window.COCKPITAPIURL}regions/get/${region}?token=${window.COCKPITTOKEN}`
+  put the result into me
+end
+
+behavior FetchMenuFromCockpit()
+  on load fetch `${window.COCKPITAPIURL}collections/get/menu?token=${window.COCKPITTOKEN}` as Object
+  log it
+  repeat for entry in it.entries
+    log entry
+    put `<li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="${entry.url}">${entry.label}</a></li>` at end of me
+  end
+ 
+end
