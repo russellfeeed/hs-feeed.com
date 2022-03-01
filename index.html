@@ -36,9 +36,11 @@
             on fetch:beforeRequest(headers)
               set headers['Content-Type'] to 'application/json'
               set headers['Cockpit-Token'] to window.COCKPITTOKEN
-
+            end
+            
             on load fetch `${window.COCKPITAPIURL}regions/get/${region}`
-            put the result into me
+              put the result into me
+            end
           end
         </script>
 
@@ -47,13 +49,15 @@
             on fetch:beforeRequest(headers)
               set headers['Content-Type'] to 'application/json'
               set headers['Cockpit-Token'] to window.COCKPITTOKEN
-
+            end
+            
             on load fetch `${window.COCKPITAPIURL}collections/get/menu` as Object
               log it
               repeat for entry in it.entries
                 log entry
                 put `<li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="${entry.url}">${entry.label}</a></li>` at end of me
               end
+            end
           end
         </script>
 
@@ -65,7 +69,8 @@
                       on fetch:beforeRequest(headers)
                         set headers['Content-Type'] to 'application/json'
                         set headers['Cockpit-Token'] to window.COCKPITTOKEN
-                 
+                      end
+                      
                       on keyup[key is 'Enter'] 
                         log 'New Value is '+my value
                         put my value into the innerHTML of the previous <span/>
@@ -95,8 +100,9 @@
                         show previous <span/>
                         wait 4s
                         transition #general-alert's *opacity to initial 
-                        hide #general-alert"                    
-                    />` after me
+                        hide #general-alert
+                      end"                    
+                    />` after me -- (put)
               hide next <input/>
               _hyperscript.processNode(next <input/>)
 
@@ -108,6 +114,7 @@
               put my @data-cockpit into the @data-cockpit of the next <input/>
               show next <input/> -- shows "edit in place" input
               hide me
+            end
           end
         </script>
 
@@ -117,7 +124,8 @@
             on fetch:beforeRequest(headers)
               set headers['Content-Type'] to 'application/json'
               set headers['Cockpit-Token'] to window.COCKPITTOKEN
-              
+            end
+            
             on load  
               log "Fetching "+key+" from Cockpit"
               set xbody to {filter:{key: key}} as JSON
@@ -125,7 +133,7 @@
               fetch `${window.COCKPITAPIURL}collections/get/content` {method: "POST", body: xbody} as Object
               put the result.entries[0].content into me
               put the {data: result.entries[0]} as JSON into @data-cockpit
-             
+            end 
           end
           
         </script>
