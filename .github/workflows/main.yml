@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Cloudways API Git Pull
-        uses: roelmagdaleno/cloudways-api-git-pull-action@stable
+        uses: roelmagdaleno/cloudways-api-git-pull-action@v1.1.0
         with:
           email: ${{ secrets.CLOUDWAYS_EMAIL }}
           api-key: ${{ secrets.CLOUDWAYS_API_KEY }}
