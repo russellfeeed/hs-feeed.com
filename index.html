@@ -21,6 +21,9 @@
 
 
 
+  <!--<script src="hs/behaviors._hs" type="text/hyperscript"></script>-->
+  <!-- load behaviors from a cockpit region as we can't use File: protocol here -->
+  <script src="https://cockpit.feeed.com/cockpit/api/regions/get/hs-behaviors?token=12891d01ee1336173f75d82800172f" type="text/hyperscript"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.5"></script>
 
   <script src="https://unpkg.com/htmx.org@1.7.0"></script>
@@ -31,112 +34,6 @@
     var COCKPITTOKEN = "12891d01ee1336173f75d82800172f"
   </script>
 
-  <script type="text/hyperscript">
-          behavior FetchFromCockpit(region)
-            on fetch:beforeRequest(headers)
-              set headers['Content-Type'] to 'application/json'
-              set headers['Cockpit-Token'] to window.COCKPITTOKEN
-            end
-            
-            on load fetch `${window.COCKPITAPIURL}regions/get/${region}`
-              put the result into me
-            end
-          end
-        </script>
-
-  <script type="text/hyperscript">
-          behavior FetchMenuFromCockpit()
-            on fetch:beforeRequest(headers)
-              set headers['Content-Type'] to 'application/json'
-              set headers['Cockpit-Token'] to window.COCKPITTOKEN
-            end
-            
-            on load fetch `${window.COCKPITAPIURL}collections/get/menu` as Object
-              log it
-              repeat for entry in it.entries
-                log entry
-                put `<li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="${entry.url}">${entry.label}</a></li>` at end of me
-              end
-            end
-          end
-        </script>
-
-  <script type="text/hyperscript">
-          behavior addEditInPlaceWidget
-            init
-              put `<input type="text" class="text-primary mb-3 form-control"
-                      _="
-                      on fetch:beforeRequest(headers)
-                        set headers['Content-Type'] to 'application/json'
-                        set headers['Cockpit-Token'] to window.COCKPITTOKEN
-                      end
-                      
-                      on keyup[key is 'Enter'] 
-                        log 'New Value is '+my value
-                        put my value into the innerHTML of the previous <span/>
-                        -- @Todo send the value off to Cockpit
-
-                        set xdata to @data-cockpit as Object
-                        js(xdata)
-                          delete xdata.data._mby
-                          delete xdata.data._by
-                          delete xdata.data._modified
-                          delete xdata.data._created
-                          delete xdata.data._pid
-                          delete xdata.data._o
-                        end
-                        log 'old data-cockpit: '+xdata as JSON
-                        log my value
-                        set xdata.data.content to my value
-                        log 'new data-cockpit: '+xdata as JSON
-                        fetch ${window.COCKPITAPIURL}collections/save/content with method: 'POST', body: xdata as JSON
-                        
-                        log 'Result after saving to Cockpit '+result
-                        set #general-alert's innerHTML to 'Saved! '+my value
-                        set #general-alert's *opacity to 0
-                        show #general-alert
-                        transition #general-alert's *opacity to 100%
-                        hide me
-                        show previous <span/>
-                        wait 4s
-                        transition #general-alert's *opacity to initial 
-                        hide #general-alert
-                      end"                    
-                    />` after me -- (put)
-              hide next <input/>
-              _hyperscript.processNode(next <input/>)
-
-
-            on click
-              halt the event
-              log 'Editing: ' + my innerHTML
-              put my innerHTML into the value of the next <input/>
-              put my @data-cockpit into the @data-cockpit of the next <input/>
-              show next <input/> -- shows "edit in place" input
-              hide me
-            end
-          end
-        </script>
-
-
-  <script type="text/hyperscript">
-          behavior FetchContentFromCockpit(key)
-            on fetch:beforeRequest(headers)
-              set headers['Content-Type'] to 'application/json'
-              set headers['Cockpit-Token'] to window.COCKPITTOKEN
-            end
-            
-            on load  
-              log "Fetching "+key+" from Cockpit"
-              set xbody to {filter:{key: key}} as JSON
-              log "xbody="+xbody
-              fetch `${window.COCKPITAPIURL}collections/get/content` {method: "POST", body: xbody} as Object
-              put the result.entries[0].content into me
-              put the {data: result.entries[0]} as JSON into @data-cockpit
-            end 
-          end
-          
-        </script>
 
 
 
