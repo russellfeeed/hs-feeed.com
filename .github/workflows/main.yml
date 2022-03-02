@@ -1,4 +1,4 @@
-- name: Cloudways API Git Pull
+name: Cloudways API Git Pull
   # You may pin to the exact commit or the version.
   # uses: roelmagdaleno/cloudways-api-git-pull-action@41373b6ea7db7ca70cb9e20ca84f5646b3a33ddf
   uses: roelmagdaleno/cloudways-api-git-pull-action@v1.1.0
