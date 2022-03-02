@@ -1,0 +1,17 @@
+- name: Cloudways API Git Pull
+  # You may pin to the exact commit or the version.
+  # uses: roelmagdaleno/cloudways-api-git-pull-action@41373b6ea7db7ca70cb9e20ca84f5646b3a33ddf
+  uses: roelmagdaleno/cloudways-api-git-pull-action@v1.1.0
+  with:
+    # Cloudways Account Email
+    email: russell~feeed.com
+    # Cloudways API Key
+    api-key: k6GJVj11W74r1YZcVOmYkvsOJ6Dqyz
+    # Cloudways Server ID
+    server-id: 676167
+    # Cloudways App ID
+    app-id: 2221901
+    # The Git branch you are pulling the changes
+    branch-name: main
+    # The path you are deploying the changes (ignore public_html string)
+    deploy-path: # default is 
